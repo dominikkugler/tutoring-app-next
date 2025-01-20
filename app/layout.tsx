@@ -1,4 +1,3 @@
-
 import { Geist } from "next/font/google";
 import "./globals.css";
 import { Button, ButtonGroup } from "@heroui/button";
@@ -41,10 +40,18 @@ export default function RootLayout({
 							<Link size="sm" color="secondary" href="#">
 								Ogłoszenia
 							</Link>
-							<Button as={Link} color="secondary" href="" variant="solid">
+							<Button
+								as={Link}
+								color="secondary"
+								href="/sign-in"
+								variant="solid">
 								Zaloguj się
 							</Button>
-							<Button as={Link} color="secondary" href="" variant="ghost">
+							<Button
+								as={Link}
+								color="secondary"
+								href="/sign-up"
+								variant="ghost">
 								Zarejestruj się
 							</Button>
 						</div>
