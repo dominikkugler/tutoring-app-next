@@ -70,6 +70,32 @@ export const completeProfileAction = async (formData: FormData) => {
   return redirect("/protected");
 }
 
+export const createPostAction = async (formData: FormData) => {
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+  const hourlyRate = formData.get("hourlyRate") as string;
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/sign-in");
+  }
+
+  await supabase.from("posts").insert([
+    {
+      title,
+      content,
+      hourlyRate,
+      user_id: user.id,
+    },
+  ]);
+
+  return redirect("/protected");
+}
+
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

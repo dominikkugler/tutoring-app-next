@@ -1,10 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
   
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -23,18 +23,32 @@ export default async function ProtectedPage() {
     return redirect("/protected/complete-profile");
   }
 
+  const { data: posts } = await supabase
+    .from('posts')
+    .select('*');
+
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <div className="text-sm font-mono p-3 rounded border">
-          <p><span className="font-bold">Email:</span> {user.email}</p>
-        </div>
-        <div className="text-sm font-mono p-3 rounded border">
-          <p><span className="font-bold">Name:</span> {profile.name}</p>
-          <p><span className="font-bold">Phone:</span> {profile.phone}</p>
-          <p><span className="font-bold">Role:</span> {profile.role}</p>
-        </div>
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold">Welcome, {profile.name}!</h1>
+        <p className="text-lg text-gray-500">You are signed in as {user.email}</p>
+      </div>
+      <div className="flex flex-col gap-4">
+        
+        <ul className="flex flex-col gap-4">
+          {posts && posts.map((post) => (
+            <div>
+              <h1 className="text-2xl font-bold">Posts</h1>
+              <li key={post.id} className="flex flex-col gap-2">
+                <h3 className="text-lg font-bold">{post.title}</h3>
+                <p className="text-gray-500">{post.content}</p>
+              </li>
+            </div>
+          ))}
+        </ul>
+      </div>
+      <div className="flex flex-col gap-4 text-center">
+        <Link className="text-white-600 bg-black-200 py-2 px-4 rounded" href="/protected/create-post">Create Post</Link>
       </div>
     </div>
   );
