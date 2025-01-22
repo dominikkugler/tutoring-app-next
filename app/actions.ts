@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { create } from "domain";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -38,6 +39,75 @@ export const signUpAction = async (formData: FormData) => {
     );
   }
 };
+
+export const completeProfileAction = async (formData: FormData) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return encodedRedirect("error", "/sign-in", "User not found");
+  }
+
+  const name = formData.get("name")?.toString();
+  const phone = formData.get("phone")?.toString();
+  const role = formData.get("role")?.toString();
+
+  console.log("User:", user);
+  console.log("Name:", name);
+  console.log("Phone:", phone);
+  console.log("Role:", role);
+
+  await supabase.from("profiles").insert([
+    {
+      user_id: user.id,
+      name,
+      phone,
+      role,
+    },
+  ]);
+
+  return redirect("/protected");
+}
+
+export const createPostAction = async (formData: FormData) => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return encodedRedirect("error", "/sign-in", "User not found");
+  }
+
+  const { data: profile } = await supabase.from("profiles").select().eq("user_id", user.id).single();
+
+
+  const title = formData.get("title")?.toString();
+  const content = formData.get("content")?.toString();
+  const hourlyRate = parseFloat(formData.get("hourlyRate")?.toString() || "0");
+  const category = parseInt(formData.get("category")?.toString() || "0");
+  console.log("Profile:", profile);
+  console.log("Title:", title);
+  console.log("Content:", content);
+  console.log("Hourly Rate:", hourlyRate);
+  console.log("Category:", category);
+
+  await supabase.from("posts").insert([
+    {
+      user_id : profile.id,
+      category_id: category,
+      title: title,
+      content : content,
+      hourlyrate: hourlyRate,
+      created_at: new Date(),
+    },
+  ]);
+
+  return redirect("/protected");
+}
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;

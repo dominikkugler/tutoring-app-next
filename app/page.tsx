@@ -1,6 +1,7 @@
 import React from "react";
 import Post from "@/components/Post";
 import PostList from "@/components/PostList";
+import {createClient} from "@/utils/supabase/server";
 import {
 	Card,
 	CardHeader,
@@ -45,6 +46,8 @@ const posts = [
 ];
 
 export default async function Home() {
+    const supabase = await createClient();
+    const {data: categories} = await supabase.from("categories").select("*");
 	return (
 		<>
 			<main>
@@ -75,4 +78,5 @@ export default async function Home() {
 			</main>
 		</>
 	);
+
 }
