@@ -39,6 +39,37 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
+export const completeProfileAction = async (formData: FormData) => {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return encodedRedirect("error", "/sign-in", "User not found");
+  }
+
+  const name = formData.get("name")?.toString();
+  const phone = formData.get("phone")?.toString();
+  const role = formData.get("role")?.toString();
+
+  console.log("User:", user);
+  console.log("Name:", name);
+  console.log("Phone:", phone);
+  console.log("Role:", role);
+
+  await supabase.from("profiles").insert([
+    {
+      user_id: user.id,
+      name,
+      phone,
+      role,
+    },
+  ]);
+
+  return redirect("/protected");
+}
+
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

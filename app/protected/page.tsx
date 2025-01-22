@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
+  
 
   const {
     data: { user },
@@ -28,6 +29,11 @@ export default async function ProtectedPage() {
         <h2 className="font-bold text-2xl mb-4">Your user details</h2>
         <div className="text-sm font-mono p-3 rounded border">
           <p><span className="font-bold">Email:</span> {user.email}</p>
+        </div>
+        <div className="text-sm font-mono p-3 rounded border">
+          <p><span className="font-bold">Name:</span> {profile.name}</p>
+          <p><span className="font-bold">Phone:</span> {profile.phone}</p>
+          <p><span className="font-bold">Role:</span> {profile.role}</p>
         </div>
       </div>
     </div>
