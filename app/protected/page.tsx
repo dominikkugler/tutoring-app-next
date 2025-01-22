@@ -37,11 +37,12 @@ export default async function ProtectedPage() {
         
         <ul className="flex flex-col gap-4">
           {posts && posts.map((post) => (
-            <div>
+            <div key={post.id}>
               <h1 className="text-2xl font-bold">Posts</h1>
               <li key={post.id} className="flex flex-col gap-2">
                 <h3 className="text-lg font-bold">{post.title}</h3>
                 <p className="text-gray-500">{post.content}</p>
+                <p className="text-gray-500">{post.hourlyrate}</p>
               </li>
             </div>
           ))}

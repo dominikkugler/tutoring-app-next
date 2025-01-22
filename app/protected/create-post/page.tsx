@@ -47,8 +47,8 @@ export default function CreatePostPage() {
                         className="border border-gray-300 rounded-md p-2 mt-2"
                     >
                         <option value="">Select a category</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
+                        {categories.map((category, index) => (
+                            <option key={`${category.id}-${index}`} value={category.id}>
                                 {category.name}
                             </option>
                         ))}

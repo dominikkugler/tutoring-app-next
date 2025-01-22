@@ -4,6 +4,7 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { create } from "domain";
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -71,9 +72,6 @@ export const completeProfileAction = async (formData: FormData) => {
 }
 
 export const createPostAction = async (formData: FormData) => {
-  const title = formData.get("title") as string;
-  const content = formData.get("content") as string;
-  const hourlyRate = formData.get("hourlyRate") as string;
   const supabase = await createClient();
 
   const {
@@ -81,15 +79,30 @@ export const createPostAction = async (formData: FormData) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/sign-in");
+    return encodedRedirect("error", "/sign-in", "User not found");
   }
+
+  const { data: profile } = await supabase.from("profiles").select().eq("user_id", user.id).single();
+
+
+  const title = formData.get("title")?.toString();
+  const content = formData.get("content")?.toString();
+  const hourlyRate = parseFloat(formData.get("hourlyRate")?.toString() || "0");
+  const category = parseInt(formData.get("category")?.toString() || "0");
+  console.log("Profile:", profile);
+  console.log("Title:", title);
+  console.log("Content:", content);
+  console.log("Hourly Rate:", hourlyRate);
+  console.log("Category:", category);
 
   await supabase.from("posts").insert([
     {
-      title,
-      content,
-      hourlyRate,
-      user_id: user.id,
+      user_id : profile.id,
+      category_id: category,
+      title: title,
+      content : content,
+      hourlyrate: hourlyRate,
+      created_at: new Date(),
     },
   ]);
 
