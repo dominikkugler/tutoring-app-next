@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
+import EditForm from "@/app/protected/edit-post/EditForm";
 
 type Props = {
   params: {
@@ -21,9 +21,8 @@ export default async function EditPost({ params }: Props) {
     <div>
       <h1>Edit Post</h1>
       <p>Editing post with ID: {id}</p>
-      {/* There should be a Form component*/}
-      {/* Pass the post as props to the Form component */}
-      {/* Prefill the form with the post data */}
+      <EditForm post={post} />
+
     </div>
   );
 }
