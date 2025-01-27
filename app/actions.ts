@@ -40,6 +40,18 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
+export const deletePostAction = async (formData: FormData) => {
+  const supabase = await createClient();
+  const id = formData.get("id")?.toString();
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting post:", error.message);
+  } else {
+    console.log("Post deleted successfully");
+  }
+}
+
 export const completeProfileAction = async (formData: FormData) => {
   const supabase = await createClient();
   const {
