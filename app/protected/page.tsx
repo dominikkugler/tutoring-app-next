@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import DeleteButton from "@/app/protected/DeleteButton";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
@@ -55,8 +56,9 @@ export default async function ProtectedPage() {
               <div className="absolute bottom-2 right-2 flex gap-2">
                 
                 <Link className="text-blue-600 hover:underline" href={`/protected/edit-post/${post.id}`}>Edit</Link>
-                {/* figure out how to incorporate delete here */}
-                <button className="text-red-600 hover:underline">Delete</button>
+                
+                <DeleteButton postId={post.id}>Delete</DeleteButton>
+            
               </div>
             </li>
             ))}

@@ -40,9 +40,8 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
-export const deletePostAction = async (formData: FormData) => {
+export const deletePostAction = async (id: string) => {
   const supabase = await createClient();
-  const id = formData.get("id")?.toString();
   const { error } = await supabase.from("posts").delete().eq("id", id);
 
   if (error) {
