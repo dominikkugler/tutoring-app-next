@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { JSX } from "react";
 import {
 	Card,
 	CardHeader,
@@ -13,14 +14,13 @@ import {
 	PopoverContent,
 	Button,
 } from "@heroui/react";
-import { MdAccountCircle } from "react-icons/md";
 type Props = {
 	params: {
 		id: string;
 	};
 };
 
-export default async function PostPage({ params }: Props) {
+export default async function PostPage({ params }: Props): Promise<JSX.Element> {
 	console.log("Post ID:", params.id);
 
 	const supabase = await createClient();
