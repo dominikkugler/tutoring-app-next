@@ -28,20 +28,21 @@ export default async function Home() {
 		<>
 			<main>
 				<HeroUIProvider>
-					<div className="flex">
-						{/* Kolumna 1 - 20% szerokości */}
-						<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
+					<div className="flex flex-wrap md:flex-nowrap">
+					{/* Lewa kolumna - 100% szerokości na mobile, 7.5% na większych ekranach */}
+					<div className="w-full md:w-[7.5%] p-4 sm:p-6 md:p-12"></div>
 
-						{/* Kolumna 2 - 60% szerokości */}
-						<div className="flex flex-col w-full md:w-[60%] gap-4 p-4 sm:p-6 md:p-12">
-							{/* PostList generuje dynamicznie listę postów */}
-							{posts ? <PostList posts={posts} /> : <div>Loading posts...</div>}
-						</div>
-						{/* Kolumna 1 - 20% szerokości */}
-						<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
+					{/* Środkowa kolumna - 100% szerokości na mobile, 85% na większych ekranach */}
+					<div className="w-full md:w-[85%] p-4 sm:p-6 md:p-12">
+						{posts ? <PostList posts={posts} /> : <div>Loading posts...</div>}
+					</div>
+
+					{/* Prawa kolumna - 100% szerokości na mobile, 7.5% na większych ekranach */}
+					<div className="w-full md:w-[7.5%] p-4 sm:p-6 md:p-12"></div>
 					</div>
 				</HeroUIProvider>
 			</main>
+
 		</>
 	);
 }

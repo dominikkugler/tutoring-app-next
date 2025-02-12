@@ -85,20 +85,21 @@ const Header = ({ user }: { user: any }) => {
 					</Dropdown>
 				) : (
 					<>
-						<NavbarItem className="hidden lg:flex">
-							<Link isBlock className="text-white" size="sm" href="/sign-in">
+						<NavbarItem className="flex">
+							<Link className="text-white" size="sm" href="/sign-in">
 								Zaloguj się
 							</Link>
-						</NavbarItem>
-						<NavbarItem>
+							</NavbarItem>
+							<NavbarItem>
 							<Button
 								as={Link}
 								color="secondary"
 								href="/sign-up"
-								variant="solid">
+								variant="solid"
+							>
 								Zarejestruj się
 							</Button>
-						</NavbarItem>
+							</NavbarItem>
 					</>
 				)}
 			</NavbarContent>
