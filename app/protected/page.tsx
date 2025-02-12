@@ -2,7 +2,11 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import PostList from "@/components/PostList";
 import { HeroUIProvider } from "@heroui/react";
-import { Pagination } from "@heroui/react";
+import {
+	Pagination,
+	PaginationItem,
+	PaginationCursor,
+} from "@heroui/pagination";
 import { Button, Link } from "@heroui/react";
 export default async function ProtectedPage() {
 	const supabase = await createClient();
@@ -34,25 +38,24 @@ export default async function ProtectedPage() {
 	return (
 		<HeroUIProvider>
 			<main>
-				<div className="flex">
+				<div className="flex flex-col md:flex-row">
 					{/* Lewa kolumna (20%) */}
-					<div className="w-[20%] p-12"></div>
+					<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
 
 					{/* Środkowa kolumna (60%) */}
-					<div className="flex flex-col w-[60%] gap-6 p-12">
-						<Link href="/protected/create-post">
-							<Button color="primary">Dodaj ogłoszenie</Button>
-						</Link>
+					<div className="flex flex-col w-full md:w-[60%] gap-4 p-4 sm:p-6 md:p-12">
 						{posts ? (
 							<PostList posts={posts} />
 						) : (
 							<div>Ładowanie postów...</div>
 						)}
-						<Pagination initialPage={1} total={10} />
+						<div className="flex justify-center">
+							<Pagination initialPage={1} total={10} />
+						</div>
 					</div>
 
 					{/* Prawa kolumna (20%) */}
-					<div className="w-[20%] p-4"></div>
+					<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
 				</div>
 			</main>
 		</HeroUIProvider>

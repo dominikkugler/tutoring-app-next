@@ -1,147 +1,158 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+import {
+	Input,
+	Select,
+	SelectItem,
+	Textarea,
+	Card,
+	CardHeader,
+	CardBody,
+	Divider,
+} from "@heroui/react";
+import { SubmitButton } from "@/components/submit-button";
 
 interface Category {
-    id: number;
-    name: string;
+	id: number;
+	name: string;
 }
 
 interface Post {
-    id: number;
-    title: string;
-    content: string;
-    hourlyRate: number;
-    category?: Category; // Make category optional, since it might not be loaded
+	id: number;
+	title: string;
+	content: string;
+	hourlyRate: number;
+	category?: Category;
 }
 
 interface EditFormProps {
-    post: Post;
+	post: Post;
 }
 
 const EditForm: React.FC<EditFormProps> = ({ post }) => {
-    const [title, setTitle] = useState(post.title);
-    const [content, setContent] = useState(post.content);
-    const [hourlyRate, setHourlyRate] = useState(post.hourlyRate);
-    const [category, setCategory] = useState(post.category?.id.toString() || ""); // Initialize with post.category?.id or empty string
-    const [categories, setCategories] = useState<Category[]>([]);
+	const [title, setTitle] = useState(post.title);
+	const [content, setContent] = useState(post.content);
+	const [hourlyRate, setHourlyRate] = useState<number | "">(post.hourlyRate);
+	const [category, setCategory] = useState<number | null>(
+		post.category?.id || null
+	);
+	const [categories, setCategories] = useState<Category[]>([]);
 
-    useEffect(() => {
-        async function fetchCategories() {
-            const { data, error } = await supabase
-                .from('categories')
-                .select('id, name');
+	useEffect(() => {
+		async function fetchCategories() {
+			const { data, error } = await supabase
+				.from("categories")
+				.select("id, name");
 
-            if (error) {
-                console.error("Error fetching categories:", error);
-            } else {
-                setCategories(data || []); // Ensure data is an array
-            }
-        }
+			if (error) {
+				console.error("Error fetching categories:", error);
+			} else {
+				setCategories(data || []);
+			}
+		}
 
-        fetchCategories();
-    }, []);
+		fetchCategories();
+	}, []);
 
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value);
-    };
+	const updatePost = async () => {
+		const { error } = await supabase
+			.from("posts")
+			.update({
+				title,
+				content,
+				hourlyRate,
+				category_id: category,
+			})
+			.eq("id", post.id);
 
-    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setContent(e.target.value);
-    };
+		if (error) {
+			console.error("Error updating post:", error);
+		} else {
+			console.log("Post updated successfully");
+		}
+	};
 
-    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setCategory(e.target.value);
-    };
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		await updatePost();
+	};
 
-    const handleHourlyRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setHourlyRate(parseFloat(e.target.value));
-    }
+	return (
+		<div className="flex justify-center items-center min-h-[90vh] py-12">
+			<Card className="w-full max-w-2xl p-6 shadow-lg">
+				<CardHeader>
+					<h2 className="text-xl">Edytuj ogłoszenie</h2>
+				</CardHeader>
+				<Divider />
+				<CardBody>
+					<form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+						{/* Kategoria */}
+						<Select
+							className="w-full"
+							label="Kategoria"
+							placeholder="Wybierz kategorię"
+							selectionMode="single"
+							selectedKeys={category ? [category.toString()] : []}
+							onSelectionChange={(selected) =>
+								setCategory(parseInt(Array.from(selected)[0] as string))
+							}>
+							{categories.map((cat) => (
+								<SelectItem key={cat.id} value={cat.id.toString()}>
+									{cat.name}
+								</SelectItem>
+							))}
+						</Select>
 
-    // Update the post
-    const updatePost = async () => {
-        const { error } = await supabase
-            .from('posts')
-            .update({
-                title,
-                content,
-                hourlyRate,
-                category_id: category
-            })
-            .eq('id', post.id);
+						{/* Tytuł */}
+						<Input
+							className="w-full"
+							label="Tytuł"
+							placeholder="Wpisz tytuł ogłoszenia"
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}
+						/>
 
-        if (error) {
-            console.error("Error updating post:", error);
-        } else {
-            console.log("Post updated successfully");
-        }
-    };
+						{/* Treść */}
+						<Textarea
+							className="w-full"
+							label="Treść ogłoszenia"
+							labelPlacement="outside"
+							placeholder="Opisz swoje ogłoszenie..."
+							value={content}
+							onChange={(e) => setContent(e.target.value)}
+						/>
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        updatePost(); // Wait for the updatePost to finish before proceeding
-    };
+						{/* Stawka godzinowa */}
+						<Input
+							id="hourlyRate"
+							type="number"
+							startContent={
+								<div className="pointer-events-none flex items-center">
+									<span className="text-default-400 text-small">zł</span>
+								</div>
+							}
+							value={
+								hourlyRate !== undefined && hourlyRate !== null
+									? hourlyRate.toString()
+									: ""
+							}
+							onChange={(e) => setHourlyRate(parseFloat(e.target.value))}
+						/>
 
-
-    return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md mx-auto p-6 border border-gray-300 rounded-lg bg-white">
-            <label htmlFor="title" className="font-medium text-gray-700">
-                Title:
-                <input
-                    id="title"
-                    type="text"
-                    value={title}
-                    onChange={handleTitleChange}
-                    className="mt-2 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-black"
-                />
-            </label>
-
-            <label htmlFor="content" className="font-medium text-gray-700">
-                Content:
-                <textarea
-                    id="content"
-                    value={content}
-                    onChange={handleContentChange}
-                    className="mt-2 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-black"
-                />
-            </label>
-
-            <label htmlFor="category" className="font-medium text-gray-700">
-                Category:
-                <select
-                    id="category"
-                    value={category}
-                    onChange={handleCategoryChange}
-                    className="mt-2 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-black"
-                >
-                    {categories.map((cat) => (
-                        <option key={cat.id} value={cat.id.toString()}>
-                            {cat.name}
-                        </option>
-                    ))}
-                </select>
-            </label>
-
-            <label htmlFor="hourlyRate" className="font-medium text-gray-700">
-                Hourly Rate:
-                <input
-                    id="hourlyRate"
-                    type="number"
-                    value={hourlyRate}
-                    onChange={handleHourlyRateChange}
-                    className="mt-2 p-2 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-black"
-                />
-            </label>
-
-            <button
-                type="submit"
-                className="mt-4 px-6 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition"
-            >
-                Save
-            </button>
-        </form>
-    );
+						{/* Przycisk zapisu */}
+						<SubmitButton
+							className="mt-2"
+							type="submit"
+							disabled={!title || !content || !hourlyRate || category === null}>
+							Zapisz zmiany
+						</SubmitButton>
+					</form>
+				</CardBody>
+			</Card>
+		</div>
+	);
 };
 
 export default EditForm;
