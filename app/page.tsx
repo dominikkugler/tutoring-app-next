@@ -1,4 +1,19 @@
-import {createClient} from "@/utils/supabase/server";
+import React from "react";
+import Post from "@/components/Post";
+import PostList from "@/components/PostList";
+import { createClient } from "@/utils/supabase/server";
+import {
+	Card,
+	CardHeader,
+	CardBody,
+	CardFooter,
+	Divider,
+	Link,
+	Image,
+	CheckboxGroup,
+	Checkbox,
+	HeroUIProvider,
+} from "@heroui/react";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -11,25 +26,25 @@ export default async function Home() {
 	`);
 
 	return (
-		<div className="flex-1 w-full flex flex-col gap-12">
-		  <div className="flex flex-col gap-4">
-			
-			<ul className="flex flex-col gap-4">
-			  {posts && posts.map((post) => (
-				<div key={post.id}>
-				  <h1 className="text-2xl font-bold">Posts</h1>
-				  <li key={post.id} className="flex flex-col gap-2">
-					<h3 className="text-lg font-bold">{post.title}</h3>
-					<h5 className="text-gray-500">{post.categories.name}</h5>
-					<p className="text-gray-500">{post.content}</p>
-					<p className="text-gray-500">{post.hourlyrate}</p>
-				  </li>
-				</div>
-			  ))}
-			</ul>
-		  </div>
-		  <div className="flex flex-col gap-4 text-center">
-		  </div>
-		</div>
-	  );
+		<>
+			<main>
+				<HeroUIProvider>
+					<div className="flex">
+						{/* Kolumna 1 - 20% szerokości */}
+						<div className="w-[20%] p-12">
+							
+						</div>
+
+						{/* Kolumna 2 - 60% szerokości */}
+						<div className="flex flex-col w-[60%] gap-6 p-12">
+							{/* PostList generuje dynamicznie listę postów */}
+							{posts ? <PostList posts={posts} /> : <div>Loading posts...</div>}
+						</div>
+						{/* Kolumna 1 - 20% szerokości */}
+						<div className="w-[20%] p-4"></div>
+					</div>
+				</HeroUIProvider>
+			</main>
+		</>
+	);
 }
