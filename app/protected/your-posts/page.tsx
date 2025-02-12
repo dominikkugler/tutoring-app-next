@@ -71,13 +71,7 @@ export default async function YourPosts() {
 									<Divider />
 									<CardFooter className="flex flex-col sm:flex-row sm:justify-between gap-2">
 										<div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-											<Link
-												href={`/protected/edit-post/${post.id}`}
-												className="w-full sm:w-auto">
-												<Button color="primary" className="w-full sm:w-auto">
-													Edytuj
-												</Button>
-											</Link>
+											
 											<DeleteButton postId={post.id}>Usuń</DeleteButton>
 										</div>
 										<Link
