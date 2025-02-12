@@ -6,6 +6,7 @@ interface PostData {
 	title: string;
 	user_id: string;
 	category_id: string;
+	content: string;
 	hourlyrate: number;
 	created_at: string;
 	profiles: {
@@ -26,9 +27,11 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
 			{posts.map((post) => (
 				<Post
 					key={post.id}
+					id={parseInt(post.id, 10)}
 					title={post.title}
+					content={post.content}
 					authorName={post.profiles?.name ?? "Nieznany autor"}
-					categoryName={post.categories.name}
+					categoryName={post.categories?.name ?? "Brak kategorii"}
 					hourlyRate={post.hourlyrate}
 					createdAt={post.created_at}
 				/>
