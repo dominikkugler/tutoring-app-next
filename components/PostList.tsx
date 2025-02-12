@@ -27,7 +27,7 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
 		  <Post
 			key={post.id}
 			title={post.title}
-			authorName={post.profiles.name}
+			authorName={"test"}
 			categoryName={post.categories.name}
 			hourlyRate={post.hourlyrate}
 			createdAt={post.created_at}
