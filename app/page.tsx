@@ -16,14 +16,13 @@ import {
 } from "@heroui/react";
 
 export default async function Home() {
-  const supabase = await createClient();
+	const supabase = await createClient();
 
-  const { data: posts } = await supabase
-    .from('posts')
-    .select(`
-			*,
-			categories (name)
-	`);
+	const { data: posts } = await supabase.from("posts").select(`
+    *,
+    profiles (name),
+    categories (name)
+  `);
 
 	return (
 		<>
@@ -31,9 +30,7 @@ export default async function Home() {
 				<HeroUIProvider>
 					<div className="flex">
 						{/* Kolumna 1 - 20% szerokości */}
-						<div className="w-[20%] p-12">
-							
-						</div>
+						<div className="w-[20%] p-12"></div>
 
 						{/* Kolumna 2 - 60% szerokości */}
 						<div className="flex flex-col w-[60%] gap-6 p-12">

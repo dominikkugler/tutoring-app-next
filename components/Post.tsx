@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup } from "@heroui/button";
+import { MdAccountCircle } from "react-icons/md";
 import {
 	Card,
 	CardHeader,
@@ -35,13 +36,8 @@ const Post: React.FC<PostProps> = ({
 				<CardHeader className="flex gap-3">
 					<div className="flex flex-row items-center justify-between w-full">
 						<div className="flex flex-row gap-3">
-							<Image
-								alt="avatar"
-								height={48}
-								radius="sm"
-								src={"https://github.com/heroui-inc/heroui"}
-								width={48}
-							/>
+							<MdAccountCircle size={48} className="text-gray-500" />{" "}
+							{/* Ikona zamiast obrazka */}
 							<div className="flex flex-col">
 								<p className="text-md">{authorName}</p>
 								<p className="text-small text-default-500">{categoryName}</p>
@@ -49,11 +45,11 @@ const Post: React.FC<PostProps> = ({
 						</div>
 						<Chip
 							classNames={{
-								base: "bg-gradient-to-br p-2 from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
-								content: "drop-shadow shadow-black text-white",
+								base: "bg-gradient-to-br p-2 px-3 from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+								content: "drop-shadow shadow-black text-white ",
 							}}
 							variant="shadow">
-							{hourlyRate}
+							{hourlyRate} zł / 60 min
 						</Chip>
 					</div>
 				</CardHeader>
