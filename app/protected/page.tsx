@@ -49,9 +49,6 @@ export default async function ProtectedPage() {
 						) : (
 							<div>Ładowanie postów...</div>
 						)}
-						<div className="flex justify-center">
-							<Pagination initialPage={1} total={10} />
-						</div>
 					</div>
 
 					{/* Prawa kolumna (20%) */}

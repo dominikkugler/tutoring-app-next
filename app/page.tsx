@@ -30,15 +30,15 @@ export default async function Home() {
 				<HeroUIProvider>
 					<div className="flex">
 						{/* Kolumna 1 - 20% szerokości */}
-						<div className="w-[20%] p-12"></div>
+						<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
 
 						{/* Kolumna 2 - 60% szerokości */}
-						<div className="flex flex-col w-[60%] gap-6 p-12">
+						<div className="flex flex-col w-full md:w-[60%] gap-4 p-4 sm:p-6 md:p-12">
 							{/* PostList generuje dynamicznie listę postów */}
 							{posts ? <PostList posts={posts} /> : <div>Loading posts...</div>}
 						</div>
 						{/* Kolumna 1 - 20% szerokości */}
-						<div className="w-[20%] p-4"></div>
+						<div className="w-full md:w-[20%] p-4 sm:p-6 md:p-12"></div>
 					</div>
 				</HeroUIProvider>
 			</main>
