@@ -49,6 +49,8 @@ export const deletePostAction = async (id: string) => {
   } else {
     console.log("Post deleted successfully");
   }
+
+  return redirect("/protected");
 }
 
 export const completeProfileAction = async (formData: FormData) => {

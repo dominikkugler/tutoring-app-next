@@ -8,7 +8,7 @@ type Props = {
 };
 
 export default async function EditPost({ params }: Props) {
-  const { id } = params;
+  const { id } = await params;
   const supabase = await createClient();
 
   const { data: post } = await supabase
