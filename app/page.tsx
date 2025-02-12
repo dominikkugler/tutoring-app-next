@@ -16,35 +16,14 @@ import {
 } from "@heroui/react";
 
 export default async function Home() {
-	const supabase = await createClient();
-	// Pobierz dane z tabeli `categories`
-	const { data: categories, error: categoriesError } = await supabase
-		.from("categories")
-		.select("*");
+  const supabase = await createClient();
 
-	// Pobierz dane z tabeli `posts` z relacjami do `users` i `categories`
-	const { data: posts, error: postsError } = await supabase.from("posts")
-		.select(`
-    *,
-    profiles (
-      name
-    ),
-	categories (
-      name
-    )
-	  
-  `);
-
-	// Obsługa błędów
-	if (postsError || categoriesError) {
-		console.error(
-			"Error fetching posts or categories:",
-			postsError?.message || categoriesError?.message
-		);
-		return <div>Error loading posts or categories</div>;
-	}
-
-	// Przekształcamy dane, aby użytkownicy i kategorie były obiektami, a nie tablicami
+  const { data: posts } = await supabase
+    .from('posts')
+    .select(`
+			*,
+			categories (name)
+	`);
 
 	return (
 		<>
@@ -53,15 +32,7 @@ export default async function Home() {
 					<div className="flex">
 						{/* Kolumna 1 - 20% szerokości */}
 						<div className="w-[20%] p-12">
-							<CheckboxGroup
-								defaultValue={["buenos-aires", "london"]}
-								label="Select cities">
-								<Checkbox value="buenos-aires">Buenos Aires</Checkbox>
-								<Checkbox value="sydney">Sydney</Checkbox>
-								<Checkbox value="san-francisco">San Francisco</Checkbox>
-								<Checkbox value="london">London</Checkbox>
-								<Checkbox value="tokyo">Tokyo</Checkbox>
-							</CheckboxGroup>
+							
 						</div>
 
 						{/* Kolumna 2 - 60% szerokości */}

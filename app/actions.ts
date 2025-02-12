@@ -40,6 +40,19 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
+export const deletePostAction = async (id: string) => {
+  const supabase = await createClient();
+  const { error } = await supabase.from("posts").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error deleting post:", error.message);
+  } else {
+    console.log("Post deleted successfully");
+  }
+
+  return redirect("/protected");
+}
+
 export const completeProfileAction = async (formData: FormData) => {
   const supabase = await createClient();
   const {

@@ -87,6 +87,8 @@ export default function CreatePostPage() {
                         className="mt-2" 
                         type="submit"
                         formAction={createPostAction}
+                        // Disable the button if any of the required fields are empty
+                        disabled={!title || !content || !hourlyRate || !category}
                     >
                         Create Post
                     </SubmitButton>
