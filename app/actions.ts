@@ -50,7 +50,7 @@ export const deletePostAction = async (id: string) => {
     console.log("Post deleted successfully");
   }
 
-  return redirect("/protected");
+  return redirect("/protected/your-posts");
 }
 
 export const completeProfileAction = async (formData: FormData) => {
@@ -137,6 +137,10 @@ export const signInAction = async (formData: FormData) => {
   }
 
   return redirect("/protected");
+};
+
+export const goToYourPosts = async () => {
+  return redirect("/protected/your-posts");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {

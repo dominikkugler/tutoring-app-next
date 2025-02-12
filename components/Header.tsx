@@ -1,6 +1,7 @@
 // components/Header.tsx
 "use client";
 import { signOutAction } from "@/app/actions";
+import { goToYourPosts } from "@/app/actions";
 import React from "react";
 import {
 	Navbar,
@@ -24,6 +25,10 @@ const Header = ({ user }: { user: any }) => {
 	const handleAction = (key: React.Key) => {
 		if (key === "logout") {
 			signOutAction(); // Wywołanie akcji signOut
+		}
+		if (key === "your-posts") {
+			// Przekierowanie na stronę z ogłoszeniami użytkownika
+			goToYourPosts();
 		}
 	};
 
@@ -64,7 +69,12 @@ const Header = ({ user }: { user: any }) => {
 								<p className="font-semibold">Jesteś zalogowany jako</p>
 								<p className="font-semibold">{user.email}</p>
 							</DropdownItem>
-							<DropdownItem key="your-posts">Twoje ogłoszenia</DropdownItem>
+							<DropdownItem 
+								key="your-posts"
+
+							>
+								Twoje ogłoszenia
+							</DropdownItem>
 							<DropdownItem
 								key="logout"
 								color="danger"

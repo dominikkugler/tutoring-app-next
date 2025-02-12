@@ -6,6 +6,7 @@ interface PostData {
 	title: string;
 	user_id: string;
 	category_id: string;
+	content: string;
 	hourlyrate: number;
 	created_at: string;
 	profiles: {
@@ -22,19 +23,23 @@ interface PostListProps {
 
 const PostList: React.FC<PostListProps> = ({ posts }) => {
 	return (
-	  <div className="flex flex-col gap-6">
-		{posts.map((post) => (
-		  <Post
-			key={post.id}
-			title={post.title}
-			authorName={"test"}
-			categoryName={post.categories.name}
-			hourlyRate={post.hourlyrate}
-			createdAt={post.created_at}
-		  />
-		))}
-	  </div>
+
+		<div className="flex flex-col gap-6">
+			{posts.map((post) => (
+				<Post
+					key={post.id}
+					id={parseInt(post.id, 10)}
+					title={post.title}
+					content={post.content}
+					authorName={post.profiles?.name ?? "Nieznany autor"}
+					categoryName={post.categories?.name ?? "Brak kategorii"}
+					hourlyRate={post.hourlyrate}
+					createdAt={post.created_at}
+				/>
+			))}
+		</div>
+
 	);
-  };
+};
 
 export default PostList;
