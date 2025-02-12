@@ -22,19 +22,19 @@ interface PostListProps {
 
 const PostList: React.FC<PostListProps> = ({ posts }) => {
 	return (
-	  <div className="flex flex-col gap-6">
-		{posts.map((post) => (
-		  <Post
-			key={post.id}
-			title={post.title}
-			authorName={post.profiles.name}
-			categoryName={post.categories.name}
-			hourlyRate={post.hourlyrate}
-			createdAt={post.created_at}
-		  />
-		))}
-	  </div>
+		<div className="flex flex-col gap-6">
+			{posts.map((post) => (
+				<Post
+					key={post.id}
+					title={post.title}
+					authorName={post.profiles?.name ?? "Nieznany autor"}
+					categoryName={post.categories.name}
+					hourlyRate={post.hourlyrate}
+					createdAt={post.created_at}
+				/>
+			))}
+		</div>
 	);
-  };
+};
 
 export default PostList;
